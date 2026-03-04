@@ -1,3 +1,6 @@
+use std::str::FromStr;
+
+
 fn main() -> Result<(), ()> {
     let args: Vec<String> = std::env::args().collect();
 
@@ -8,22 +11,36 @@ fn main() -> Result<(), ()> {
 
     let address = &args[1];
 
-    let octets: Vec<&str> = address.split('.').collect();
+    // let octets: Vec<&str> = address.split('.').collect();
 
-    let mut correct = true;
+    // let mut correct = true;
 
-    correct &= octets.len() == 4;
+    // correct &= octets.len() == 4;
     // Check if all octets fit u8
-    correct &= octets
-        .iter()
-        .map(|octet| octet.parse::<u8>())
-        .all(|octet| matches!(octet, Ok(_)));
-
+    // correct &= octets
+    //    .iter()
+    //    .map(|octet| octet.parse::<u8>())
+    //    .all(|octet| matches!(octet, Ok(_)));
+    /*
     if correct {
         println!("Adrress '{address}' is a correct IPv4 address");
         Ok(())
     } else {
         println!("Adrress '{address}' is NOT a correct IPv4 address");
         Err(())
+    }*/
+
+    // Found better way
+
+    match std::net::IpAddr::from_str(address){
+        Ok(_) => {
+            println!("Adrress '{address}' is a correct IPv4 address");
+            Ok(())
+        },
+        Err(_) => {
+            println!("Adrress '{address}' is NOT a correct IPv4 address");
+            Err(())
+        }
     }
+
 }
